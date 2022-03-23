@@ -1,1 +1,0 @@
-/var/www/html/apotheose/projet-24-voyage-o-japon-back/bedrock/web/app/plugins/query-monitor/wp-content/db.php
