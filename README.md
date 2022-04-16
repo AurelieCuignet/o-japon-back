@@ -6,19 +6,19 @@ _O'Japon is a collaborative website, allowing travelers to share their travel ex
 
 ## Backend
 
-Ce dépôt ne concerne que le backend du projet, qui sera développé à l'aide de WordPress.
+Ce dépôt ne concerne que le backend du projet, qui est développé à l'aide de WordPress.
 
-_This repository will only contain the back end project with WordPress._
+_This repository only contains the back end project with WordPress._
 
 ## Frontend
 
-Les interactions et la dynamisation des pages seront développées à l'aide du [framework Vue.js](https://vuejs.org/).
+Les interactions et la dynamisation des pages sont développées à l'aide du [framework Vue.js](https://vuejs.org/).
 
-_The front-end will be developed with the [Vue.js framework](https://vuejs.org/)._
+_The front-end is developed with the [Vue.js framework](https://vuejs.org/)._
 
-Le dépôt pour le frontend se trouve [ici](https://github.com/O-clock-Yuna/projet-24-voyage-o-japon-front).
+Le dépôt pour le frontend se trouve [ici](https://github.com/AurelieCuignet/o-japon-front).
 
-_See front-end repository [front](https://github.com/O-clock-Yuna/projet-24-voyage-o-japon-front)_
+_See front-end repository [front](https://github.com/AurelieCuignet/o-japon-front)_
 
 ## Configuration initiale / _Initial setting_
 
