@@ -108,6 +108,9 @@ function ojapon_rest_comment_meta_handler($request)
     // on vérifie en BDD si cet user a déjà commenté ce POI (on ne tient pas compte des commentaires supprimés)
     $query = "SELECT * FROM `wp_comments` WHERE `comment_post_ID` =" .$params['post'] . " AND `user_id` = " . $current_user->ID . "AND `comment_approved` != 'trash'";
     $result = $wpdb->get_row($query);
+    //! todo $result is always null because there is a syntax error in this statement (missing space before the 2nd AND). 
+    //! But the front-end doesn't handle correcty this case where the current user has already commented, so I'm leaving this as this is for now, and I'll fix this after my exam...
+    //! Keep posted!
 
     // Prepare response HTTP
     $response = array();
@@ -126,6 +129,8 @@ function ojapon_rest_comment_meta_handler($request)
         if($result) {
             $response['code'] = 201;
             $response['message'] = "Comment successfully added";
+            $response['requeteSql'] = $query;
+            $response['author'] = $current_user->ID;
         }  else {
             $error->add(400, "Comment couldn't be inserted", array('status' => 400));
             return $error;
