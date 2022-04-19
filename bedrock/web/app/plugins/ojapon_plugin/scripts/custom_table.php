@@ -13,6 +13,21 @@ function ojapon_create_custom_table()
         `poi_id` mediumint(9) NOT NULL
         ) COLLATE '" . $collation . "';";
 
+    /* New table structure - query tested and working
+    CREATE TABLE `wp_ojapon_guide_poi` (
+        `id` mediumint(9) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        `guide_id` BIGINT(20) UNSIGNED,
+        `poi_id` BIGINT(20) UNSIGNED,
+        CONSTRAINT guide_fk
+            FOREIGN KEY (`guide_id`)
+            REFERENCES `wp_posts`(`ID`)
+            ON DELETE CASCADE,
+        CONSTRAINT poi_fk
+            FOREIGN KEY (`poi_id`)
+            REFERENCES `wp_posts`(`ID`)
+            ON DELETE CASCADE
+        )
+    */
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
     //dbDelta() is used for everything: insertion, update, etc.
     dbDelta($sql);
@@ -32,7 +47,13 @@ add_action('rest_api_init', 'ojapon_rest_link_poi');
 
 function ojapon_rest_link_poi()
 {
-    // Defines a new route for our user registration
+    // Defines a new route for Guide/POI link management
+    // params are regex protected (digits only)
+    /* 
+    Route : /wp-json/wp/v2//travelguide/74/poi/25 --> 
+        POST --> add in `wp_ojapon_guide_poi` table a link between guide #74 and POI #25
+        DELETE --> remove the row linking guide #74 and POI #25 
+    */
     register_rest_route('wp/v2', '/travelguide/(?P<idguide>\d+)/poi/(?P<idpoi>\d+)', array(
         'methods' => ['POST', 'DELETE'],
         'callback' => 'ojapon_rest_link_poi_handler',
@@ -61,27 +82,24 @@ function ojapon_rest_link_poi_handler($request)
     // $request is an instance of WP_REST_Request
     $http_method = $request->get_method();
 
+    // Get current database connection
     global $wpdb;
 
-    // Preparation of errors in case of non-validation of data
+    // Create a WP_Error instance in case of invalid data
     $error = new WP_Error();
 
-    //retrieve query params
+    // Retrieve query params
     $parameters = $request->get_params();
 
-    // Prepare response HTTP
-    // todo example, to modify
-    $response = array(
-        'parameters'   => $parameters,
-        'httpMethod'    => $http_method
-    );
+    // Prepare HTTP response
+    $response = array();
     
 
-    //no need to filter, as the regex only accepts digits as argument
+    // No need to filter, as the regex only accepts digits as argument
     $idguide = $parameters['idguide'];
     $idpoi = $parameters['idpoi'];
 
-    //vérifie que les id sont strictement supérieurs à zéro
+    // Check if ids are strictly positive numbers
     if($idguide <= 0 || $idpoi <= 0) {
         $error->add(400, "IDs should be positive integers", array('status' => 400));
         return $error;
