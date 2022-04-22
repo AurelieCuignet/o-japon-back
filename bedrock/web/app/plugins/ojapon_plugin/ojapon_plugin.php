@@ -8,8 +8,6 @@
  * Author:       Aurélie Cuignet
 */
 
-
-
 // additionnal scripts
 include plugin_dir_path(__FILE__) . 'scripts/functions.php';
 // custom post types
